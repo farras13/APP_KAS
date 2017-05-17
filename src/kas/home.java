@@ -352,7 +352,8 @@ public class home extends javax.swing.JFrame {
         } else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String kalender = dateFormat.format(tgl.getDate());
-            String SQL = "INSERT INTO pemasukan (Absen,nama,tanggal,uang_masuk,uang_keluar,saldo) " + "VALUES('"+Absen.getText()+"','"+nama.getText()+"','"+kalender+"','"+um.getText()+"','"+uk.getText()+"','"+sld.getText()+"')";
+            String SQL = "INSERT INTO pemasukan (Absen,nama,tanggal,uang_masuk,uang_keluar,saldo) " + "VALUES('"+Absen.getText()+
+                    "','"+nama.getText()+"','"+kalender+"','"+um.getText()+"','"+uk.getText()+"','"+sld.getText()+"')";
             int status = koneksiDB.execute(SQL);
             if (status == 1) {
                 JOptionPane.showMessageDialog(this,"Data berhasil ditambahkan","Sukses",JOptionPane.INFORMATION_MESSAGE);

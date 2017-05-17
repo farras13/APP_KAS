@@ -35,8 +35,8 @@ public class FLogin extends javax.swing.JFrame {
         Signup = new javax.swing.JButton();
         Login = new javax.swing.JButton();
         Exit = new javax.swing.JButton();
-        username = new javax.swing.JTextField();
-        password = new javax.swing.JPasswordField();
+        txtname = new javax.swing.JTextField();
+        txtpass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,11 +87,11 @@ public class FLogin extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(jLabel1)))
@@ -105,11 +105,11 @@ public class FLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Signup)
@@ -123,7 +123,8 @@ public class FLogin extends javax.swing.JFrame {
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         // TODO add your handling code here:
-        if(JOptionPane.showConfirmDialog(null,"Apakah Anda yakin akan keluar?","Keluar",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(null,"Apakah Anda yakin akan keluar?","Keluar",JOptionPane.YES_NO_OPTION)
+                == JOptionPane.YES_OPTION){
         System.exit(0);
 }
     }//GEN-LAST:event_ExitActionPerformed
@@ -133,10 +134,11 @@ public class FLogin extends javax.swing.JFrame {
         Connection connection;
                 PreparedStatement ps;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/datalogin?zeroDateTimeBehavior=convertToNull", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/datalogin?zeroDateTimeBehavior=convertToNull", "root", 
+                    "");
             ps = connection.prepareStatement("SELECT * FROM `login` WHERE `username` = ? AND `password` = ?");
-            ps.setString(1, username.getText());
-            ps.setString(2, password.getText());
+            ps.setString(1, txtname.getText());
+            ps.setString(2, txtpass.getText());
             ResultSet result =ps.executeQuery();
             if(result.next()){
                 new home(user).show();
@@ -145,8 +147,8 @@ public class FLogin extends javax.swing.JFrame {
             else{
               
                 JOptionPane.showMessageDialog(rootPane, "Salah!");
-               password.setText("");
-               username.requestFocus();
+               txtpass.setText("");
+               txtname.requestFocus();
                 }
         }catch (SQLException ex){
             JOptionPane.showMessageDialog(rootPane,"Gagal!");
@@ -155,7 +157,17 @@ public class FLogin extends javax.swing.JFrame {
 
     private void SignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignupActionPerformed
         // TODO add your handling code here:
-        
+        String username = txtname.getText();
+        String password = txtpass.getText();
+
+        try{
+            try(Statement statement = (Statement) file_koneksi.GetConnection().createStatement()){
+                statement.executeUpdate("insert into login(username, password) VALUES ('"+username+"','"+password+"');");
+            }
+            JOptionPane.showMessageDialog(null, "Selamat! anda berhasil SignUp!");
+        }catch(Exception t){
+            JOptionPane.showMessageDialog(null, "Mohon Maaf! Ulangi Lagi Prosedur!");
+        }
     }//GEN-LAST:event_SignupActionPerformed
 
     /**
@@ -200,7 +212,7 @@ public class FLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JTextField username;
+    private javax.swing.JTextField txtname;
+    private javax.swing.JPasswordField txtpass;
     // End of variables declaration//GEN-END:variables
 }
